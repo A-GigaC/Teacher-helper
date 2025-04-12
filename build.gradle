@@ -38,7 +38,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.apache.groovy:groovy-all:4.0.16'
 
-    implementation("de.jplag:jplag:5.1.0")
+    implementation files('libs/jplag-5.1.0.jar')
 
     implementation 'commons-validator:commons-validator:1.7'
 
