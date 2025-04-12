@@ -10,16 +10,20 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType(Jar).configureEach {
+    zip64 = true
+}
+
 sourceSets {
     main {
         java { srcDirs = [] }
         groovy { srcDirs = ["src/main/java", "src/main/groovy"] }
     }
 
-    test {
-        java { srcDirs = ["src/test/java"] }
-        groovy { srcDirs = ["src/test/groovy"] }
-    }
+//    test {
+//        java { srcDirs = ["src/test/java"] }
+//        groovy { srcDirs = ["src/test/groovy"] }
+//    }
 }
 
 dependencies {
@@ -34,18 +38,36 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.apache.groovy:groovy-all:4.0.16'
 
-    implementation files('C:\\Users\\fepiv\\Downloads\\jplag-5.1.0-jar-with-dependencies.jar')
+    implementation("de.jplag:jplag:5.1.0")
 
     implementation 'commons-validator:commons-validator:1.7'
 
     implementation group: 'commons-io', name: 'commons-io', version: '2.0.1'
 }
 
-test {
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-}
+//test {
+//    useJUnitPlatform()
+//    testLogging {
+//        events "passed", "skipped", "failed"
+//    }
+//}
 
 compileTestJava.options.encoding = "UTF-8"
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'nsu.ru.Main'
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+//    // Если нужен fat-jar (со всеми зависимостями), добавьте:
+//    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
