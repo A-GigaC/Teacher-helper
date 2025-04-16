@@ -14,7 +14,11 @@ import java.util.List;
 
 class Main {
     public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException, DSLException, GitAPIException {
-        Config config = ScriptLoader.loadScript("configuration.groovy", "additional.groovy");
+        if (args.length < 3) {
+            throw new DSLException("Not enough arguments. Give path to configuration and additional.");
+        }
+
+        Config config = ScriptLoader.loadScript(args[1], args[2]);
         //System.out.println(config.getStudents().get(0).getFullName());
 //        println config.plagiarismCheck.get("Task_1_1_1")
 //        println config.plagiarismCheck.get("Task_1_1_2")
