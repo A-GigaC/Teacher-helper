@@ -172,7 +172,7 @@ public class Downloader {
                     throw new DSLException("Failed to download GitHub repository: " + repoUrl);
                 }
             } catch (GitAPIException | IOException e) {
-                throw new DSLException("Error processing GitHub repository: " + repoUrl);
+                System.err.println("[WARNING] Trubles when download repo: " + repoUrl);
             }
         }
     }
@@ -185,7 +185,8 @@ public class Downloader {
         File source = new File(sourcePath);
 
         if (!source.exists()) {
-            throw new DSLException("Source path doesn't exist: " + sourcePath);
+            System.err.println("[WARNING] Cannot access given resource: " + sourcePath);
+            return ;
         }
 
         File target = new File(destinationPath);
