@@ -89,12 +89,12 @@ def reportPath(String path) {
     config.jplagSettings.reportPath = path
 }
 
-def additionalRepos(String path) {
-    File file = new File(path)
-    if(!file.exists() || file.isDirectory()) {
-        throw new DSLException("There is no file with name $path")
+def additional(List<String> paths) {
+    if (config.additionalRepositories.isEmpty()) {
+        config.additionalRepositories = paths
+    } else {
+        config.additionalRepositories.addALl(0, paths)
     }
-    config.additionalRepositories = file.readLines()
 }
 
 def setReviewer(String reviewerNick) {
