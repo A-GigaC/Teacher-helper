@@ -165,14 +165,12 @@ public class Downloader {
                     System.out.println("Repository cloned successfully: " + repoUrl);
                     success = true;
                 }
-            } catch (TransportException e) {
+            } catch (GitAPIException | IOException e) {
                 attempts--;
                 System.out.println("Connection error (" + attempts + " attempts left): " + e.getMessage());
                 if (attempts == 0) {
-                    throw new DSLException("Failed to download GitHub repository: " + repoUrl);
+                    System.err.println("[WARNING] Trubles when download repo: " + repoUrl);
                 }
-            } catch (GitAPIException | IOException e) {
-                System.err.println("[WARNING] Trubles when download repo: " + repoUrl);
             }
         }
     }
