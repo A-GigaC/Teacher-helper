@@ -20,8 +20,8 @@ class Main {
 
         //Config config = ScriptLoader.loadScript(args[0], args[1]);
         Config config = ScriptLoader.loadScript(
-                "./new-dsl/configuration.groovy"
-                ,"./new-dsl/additional.groovy"
+                "./dsl-example/configuration.groovy"
+                ,"./dsl-example/additional.groovy"
         );
 
         //System.out.println(config.getStudents().get(0).getFullName());
