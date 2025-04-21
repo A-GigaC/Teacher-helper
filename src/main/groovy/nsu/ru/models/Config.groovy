@@ -6,9 +6,9 @@ class Config {
     List<Student> students = []
     JPlagSettings jplagSettings = new JPlagSettings()
     HashMap<Student, Double> extraScore = new HashMap<>()
-//    Integer excellentCriteria = null
-//    Integer goodCriteria = null
-//    Integer satisfactoryCriteria = null
+    Integer excellentCriteria = null
+    Integer goodCriteria = null
+    Integer satisfactoryCriteria = null
     List<String> additionalRepositories = []
     Map<Student, List<RatedTask>> resolvedTasks = new HashMap<>()
     List<String> reviewers = []
