@@ -161,7 +161,12 @@ public class ReportBuilder {
 
                 allComparisons.addAll(withFirstSubMatch);
                 allComparisons.addAll(withSecondSubMatch);
-
+                double maximalSimilarity = 0.0;
+                for (JPlagComparison comparison: allComparisons) {
+                    if (comparison.maximalSimilarity() > maximalSimilarity) {
+                        maximalSimilarity = comparison.maximalSimilarity();
+                    }
+                }
 //                System.out.println(withFirstSubMatch.size() + " " + withSecondSubMatch.size() + " " +
 //                        student.getGithubNick()
 //                                + "\\"
@@ -184,12 +189,7 @@ public class ReportBuilder {
                         + ratedTask.score
 //                        + jPlagResult.getAllComparisons()..maximalSimilarity();
                         + "  |  "
-                        + round(
-                                (allComparisons.size() > 0
-                                        ? allComparisons.get(0).maximalSimilarity()
-                                        : 0
-                                ) * 100
-                        )
+                        + (maximalSimilarity == 0 ? '-' : (((double)round(maximalSimilarity * 10000)) / 10\0.0))
                         + " %";
                         //);
                 System.out.println(output);
