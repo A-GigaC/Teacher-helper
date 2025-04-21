@@ -11,15 +11,6 @@ tasks {
     task "Task_1_5_1", 4, "2024-12-10", "2024-12-24", 50
 }
 
-//AlgScore=def CalcScore(task, task_info):
-//date_open, date_close, plagiarism, action_info, extraScore 
-		
-groups {
-    group "23216"
-    group "23214"
-    group "23213"
-}
-
 students {
     student "23214", "dromankin", "Ганс Ромашкин", "https://github.com/dromankin/OOP.git"
     student "23216", "A-GigaC", "Пивоваров Фёдор Евгеньевич", "https://github.com/A-GigaC/OOP.git"
@@ -29,23 +20,8 @@ students {
 
 additionalPlagSources "./dsl-example/addSources.txt"
 
-
-
-
-//assignments {
-//    assignment "Task_1_1_1", ["A-GigaC", "nkrainov"]
-//    assignment "Task_1_1_2", ["dromankin", "nkrainov"]
-//}
-
 setScoreCriteria {
     excellent 13
     good 11
     satisfactory 8
 }
-
-
-//Calc(CalcScore)
-
-//setReviewer "BIGNIKi"
-//
-//println "conf groovy start"

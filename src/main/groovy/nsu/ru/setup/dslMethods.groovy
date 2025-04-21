@@ -23,21 +23,6 @@ def tasks(Closure closure) {
     closure()
 }
 
-def groups(Closure closure) {
-    closure.delegate = this
-    closure()
-}
-
-//def assignments(Closure closure) {
-//    closure.delegate = this
-//    closure()
-//}
-
-def plagiarismSettings(Closure closure) {
-    closure.delegate = this
-    closure()
-}
-
 def task(String name, int maxScore, String softDeadline, String hardDeadline, int maxPlagiarism) {
     config.tasks << new Task(
             name: name,
@@ -48,11 +33,6 @@ def task(String name, int maxScore, String softDeadline, String hardDeadline, in
     )
 }
 
-def group(String name) {
-    def newGroup = new Group(name: name)
-    config.groups << newGroup
-}
-
 def students(Closure closure) {
     closure.delegate = this
     closure()
@@ -61,7 +41,8 @@ def students(Closure closure) {
 def student(String groupName, String githubNick, String fullName, String repoUrl) {
     def group = config.groups.find { it -> it.name == groupName}
     if (group == null) {
-        throw new DSLException("Group does not exists")
+        group = new Group(name: groupName, students: [])
+        config.groups.add(group)
     }
     if (!urlValidator.isValid(repoUrl)) {
         throw new DSLException("Invalid URL")
