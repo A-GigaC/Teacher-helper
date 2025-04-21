@@ -53,22 +53,6 @@ def student(String groupName, String githubNick, String fullName, String repoUrl
     config.resolvedTasks.put(githubNick, [])
 }
 
-//def assignment(String taskName, List<String> studentNicks) {
-//    def task = config.tasks.find { it -> it.name == taskName }
-//    if (task == null) {
-//        throw new DSLException("Task $taskName does not exists")
-//    }
-//
-//    def studentsList = config.students.findAll {
-//        it -> studentNicks.contains(it.githubNick)
-//    }
-//
-//    if (studentsList.isEmpty()) {
-//        throw new DSLException("These students all doesn't exist")
-//    }
-//    config.assignments << new Assignment(task: task, students: studentsList)
-//}
-
 def reportPath(String path) {
     config.jplagSettings.reportPath = path
 }
@@ -86,14 +70,6 @@ def additionalPlagSources(String path) {
     }
     config.additionalRepositories = addReposList
 }
-
-//def additional(List<String> paths) {
-//    if (config.additionalRepositories.isEmpty()) {
-//        config.additionalRepositories = paths
-//    } else {
-//        config.additionalRepositories.addALl(0, paths)
-//    }
-//}
 
 def setReviewer(String reviewerNick) {
     config.reviewers.add(reviewerNick)
@@ -163,23 +139,6 @@ def extraScore(String githubNick, Double score) {
     config.extraScore.put(student, config.extraScore.get(student) + score)
 }
 
-//def extraScore(String githubNick, String taskName, Double score) {
-//    Student student = config.students.find({ it -> it.githubNick == githubNick })
-//    if (student == null) {
-//        throw new DSLException("Student $githubNick does not exist")
-//    }
-//    Task task = config.tasks.find({it -> it.name == taskName})
-//    if (task == null) {
-//        throw new DSLException("Task $taskName does not exists")
-//    }
-//    RatedTask ratedTask = config.resolvedTasks.get(student).find({
-//        rt -> rt.task.name == task.name})
-//    if (ratedTask == null) {
-//        ratedTask = new RatedTask(task, score)
-//    }
-//    (ratedTask)
-//}
-
 def alternativeScoreStrategy(String taskName, TaskEvaluation evaluation) {
     Task task = config.tasks.find({it -> it.name == taskName})
     if (task == null) {
@@ -187,30 +146,8 @@ def alternativeScoreStrategy(String taskName, TaskEvaluation evaluation) {
     }
     task.setProperty("evaluate", evaluation)
 }
-//def checkPlagiarism(String taskName) {
-//    if (config.tasks.find({it -> it.name == taskName}) == null) {
-//        throw new DSLException("Task $taskName does not exist")
-//    }
-//    config.plagiarismCheck.put(taskName, [])
-//}
-
-//def checkPlagiarism(String taskName, List<String> students) {
-//    if (config.tasks.find({it -> it.name == taskName}) == null) {
-//        throw new DSLException("Task $taskName does not exist")
-//    }
-//    def studentsList = config.students.findAll {
-//        it -> students.contains(it.githubNick)
-//    }
-//
-//    if (studentsList.isEmpty()) {
-//        throw new DSLException("These students all doesn't exist")
-//    }
-//    config.plagiarismCheck.put(taskName, studentsList)
-//}
 
 this.groups = config.groups
 this.students = config.students
 this.tasks = config.tasks
 this.resolvedTasks = config.resolvedTasks
-
-//println "dslMethods end"

@@ -14,8 +14,6 @@ class ScriptLoader {
             throw new DSLException("Not all script files given correctly.")
         }
 
-        //println "eval"
-
         new GroovyShell(binding).evaluate(
                 new File("./src/main/groovy/nsu/ru/setup/dslMethods.groovy").text
                         + "\n"

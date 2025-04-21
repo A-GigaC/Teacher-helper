@@ -1,9 +1,5 @@
 package nsu.ru.models
 
-import nsu.ru.pipeline.ReportBuilder
-import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.revwalk.RevCommit;
-
 class Task {
     String name
     Double maxScore

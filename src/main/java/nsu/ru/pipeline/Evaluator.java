@@ -23,13 +23,6 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import static java.lang.Math.round;
 
 public class Evaluator {
-//    private Map<Student, List<RatedTask>> rated;
-////    private final Map<Student, Double> extraScore;
-//    private final List<Task> allTasks;
-//    //private final Map<Student, Double> totalScore;
-//    private final JPlagResult jPlagResult;
-    //private final Config config;
-
     public static Map<Student, List<RatedTask>> rate(Config config, JPlagResult jPlagResult) throws IOException, GitAPIException {
         Map<Student, List<RatedTask>> rated = new HashMap<>();
         for (Student student : config.getStudents()) {

@@ -4,11 +4,7 @@ import de.jplag.*;
 import de.jplag.exceptions.ExitException;
 import de.jplag.java.JavaLanguage;
 import de.jplag.options.JPlagOptions;
-import de.jplag.reporting.reportobject.ReportObjectFactory;
 import nsu.ru.exceptions.DSLException;
-import nsu.ru.models.Config;
-import nsu.ru.models.Student;
-import org.apache.lucene.store.Directory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
