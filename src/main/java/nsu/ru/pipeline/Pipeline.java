@@ -2,19 +2,18 @@ package nsu.ru.pipeline;
 
 import de.jplag.JPlagResult;
 import nsu.ru.models.Config;
+import nsu.ru.models.RatedTask;
+import nsu.ru.models.Student;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Pipeline {
-    Config config;
-
-    public Pipeline(Config config) {
-        this.config = config;
-    }
-
-    public void startPipeline() throws IOException, GitAPIException, NoSuchFieldException, IllegalAccessException {
+    public static void runPipeline(Config config) throws IOException, GitAPIException{
         Set<String> studentsReposLocalPaths = Downloader.setupStudentsRepositories(config.getStudents().stream().map(
                 student -> student.getRepoUrl()
         ).toList());
@@ -24,8 +23,8 @@ public class Pipeline {
         PlagiarismChecker pgCheck = new PlagiarismChecker(studentsReposLocalPaths);
         JPlagResult result = pgCheck.setupJPlag();
 
-        ReportBuilder reportBuilder = new ReportBuilder(config, result);
-        reportBuilder.rate();
-        reportBuilder.show();
+        Map<Student, List<RatedTask>> rated = Evaluator.rate(config, result);
+        ReportBuilder.show(config.getStudents(), rated, config.getExtraScore());
+        System.out.println("pipeline");
     }
 }

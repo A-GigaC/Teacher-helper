@@ -3,8 +3,10 @@ package nsu.ru.setup
 import nsu.ru.exceptions.DSLException
 //import nsu.ru.models.Assignment
 import nsu.ru.models.Group
+import nsu.ru.models.RatedTask
 import nsu.ru.models.Student
 import nsu.ru.models.Task
+import nsu.ru.models.TaskEvaluation
 
 import java.text.SimpleDateFormat
 import org.apache.commons.validator.routines.UrlValidator
@@ -36,12 +38,13 @@ def plagiarismSettings(Closure closure) {
     closure()
 }
 
-def task(String name, int maxScore, String softDeadline, String hardDeadline) {
+def task(String name, int maxScore, String softDeadline, String hardDeadline, int maxPlagiarism) {
     config.tasks << new Task(
             name: name,
             maxScore: maxScore,
             softDeadline: new SimpleDateFormat(timeParsingPattern).parse(softDeadline),
-            hardDeadline: new SimpleDateFormat(timeParsingPattern).parse(hardDeadline)
+            hardDeadline: new SimpleDateFormat(timeParsingPattern).parse(hardDeadline),
+            maxPlagiarism: maxPlagiarism
     )
 }
 
@@ -89,7 +92,7 @@ def reportPath(String path) {
     config.jplagSettings.reportPath = path
 }
 
-def additionalPlagSources(String filename) {
+def additionalPlagSources(String path) {
     File file = new File(path)
     if(!file.exists() || file.isDirectory()) {
         throw new DSLException("There is no file with name $path")
@@ -116,15 +119,39 @@ def setReviewer(String reviewerNick) {
 }
 
 def markAsResolved(String githubNick, String taskName) {
-    if (config.students.find({it -> it.githubNick == githubNick}) == null) {
+    Student student = config.students.find({it -> it.githubNick == githubNick})
+    if (student == null) {
         throw new DSLException("Student $githubNick does not exist")
     }
     Task task = config.tasks.find({it -> it.name == taskName});
     if (task == null) {
         throw new DSLException("Task $taskName does not exist")
     }
-    config.resolvedTasks.get(githubNick).add(task)
-    //println config.resolvedTasks.get(githubNick).size()
+    RatedTask ratedTask = new RatedTask(task, task.getMaxScore())
+    if (config.resolvedTasks.get(student) == null) {
+        config.resolvedTasks.put(student, [])
+    }
+    config.resolvedTasks.get(student).add(ratedTask)
+}
+
+def markAsResolved(String githubNick, String taskName, String completionDate) {
+    Student student = config.students.find({it -> it.githubNick == githubNick})
+    if (student == null) {
+        throw new DSLException("Student $githubNick does not exist")
+    }
+    Task task = config.tasks.find({it -> it.name == taskName});
+    if (task == null) {
+        throw new DSLException("Task $taskName does not exist")
+    }
+    RatedTask ratedTask = new RatedTask(
+            task,
+            task.getMaxScore(),
+            new SimpleDateFormat(timeParsingPattern).parse(completionDate)
+        )
+    if (config.resolvedTasks.get(student) == null) {
+        config.resolvedTasks.put(student, [])
+    }
+    config.resolvedTasks.get(student).add(ratedTask)
 }
 
 def setScoreCriteria(Closure closure) {
@@ -145,35 +172,60 @@ def satisfactory(double score) {
 }
 
 def extraScore(String githubNick, Double score) {
-    if (config.students.find({it -> it.githubNick == githubNick}) == null) {
+    Student student = config.students.find({it -> it.githubNick == githubNick})
+    if (student == null) {
         throw new DSLException("Student $githubNick does not exist")
     }
-    if (config.extraScore.get(githubNick) == null) {
-        config.extraScore.put(githubNick, 0)
+    if (config.extraScore.get(student) == null) {
+        config.extraScore.put(student, 0)
     }
-    config.extraScore.put(githubNick, config.extraScore.get(githubNick) + score)
+    config.extraScore.put(student, config.extraScore.get(student) + score)
 }
 
-def checkPlagiarism(String taskName) {
-    if (config.tasks.find({it -> it.name == taskName}) == null) {
-        throw new DSLException("Task $taskName does not exist")
-    }
-    config.plagiarismCheck.put(taskName, [])
-}
+//def extraScore(String githubNick, String taskName, Double score) {
+//    Student student = config.students.find({ it -> it.githubNick == githubNick })
+//    if (student == null) {
+//        throw new DSLException("Student $githubNick does not exist")
+//    }
+//    Task task = config.tasks.find({it -> it.name == taskName})
+//    if (task == null) {
+//        throw new DSLException("Task $taskName does not exists")
+//    }
+//    RatedTask ratedTask = config.resolvedTasks.get(student).find({
+//        rt -> rt.task.name == task.name})
+//    if (ratedTask == null) {
+//        ratedTask = new RatedTask(task, score)
+//    }
+//    (ratedTask)
+//}
 
-def checkPlagiarism(String taskName, List<String> students) {
-    if (config.tasks.find({it -> it.name == taskName}) == null) {
-        throw new DSLException("Task $taskName does not exist")
+def alternativeScoreStrategy(String taskName, TaskEvaluation evaluation) {
+    Task task = config.tasks.find({it -> it.name == taskName})
+    if (task == null) {
+        throw new DSLException("Task $taskName does not exists")
     }
-    def studentsList = config.students.findAll {
-        it -> students.contains(it.githubNick)
-    }
-
-    if (studentsList.isEmpty()) {
-        throw new DSLException("These students all doesn't exist")
-    }
-    config.plagiarismCheck.put(taskName, studentsList)
+    task.setProperty("evaluate", evaluation)
 }
+//def checkPlagiarism(String taskName) {
+//    if (config.tasks.find({it -> it.name == taskName}) == null) {
+//        throw new DSLException("Task $taskName does not exist")
+//    }
+//    config.plagiarismCheck.put(taskName, [])
+//}
+
+//def checkPlagiarism(String taskName, List<String> students) {
+//    if (config.tasks.find({it -> it.name == taskName}) == null) {
+//        throw new DSLException("Task $taskName does not exist")
+//    }
+//    def studentsList = config.students.findAll {
+//        it -> students.contains(it.githubNick)
+//    }
+//
+//    if (studentsList.isEmpty()) {
+//        throw new DSLException("These students all doesn't exist")
+//    }
+//    config.plagiarismCheck.put(taskName, studentsList)
+//}
 
 this.groups = config.groups
 this.students = config.students

@@ -197,7 +197,7 @@ public class Downloader {
                 System.out.println("Directory copied: " + sourcePath);
             }
         } catch (IOException e) {
-            throw new DSLException("Failed to copy local resource: " + sourcePath);
+            System.err.println("[WARNING] Failed to copy local resource: " + sourcePath);
         }
     }
 }
