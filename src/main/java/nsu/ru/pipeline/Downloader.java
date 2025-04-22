@@ -155,6 +155,8 @@ public class Downloader {
                         git.reset().setMode(ResetCommand.ResetType.HARD).setRef("origin/main").call();
                         System.out.println("Repository updated successfully: " + repoUrl);
                         success = true;
+                    } catch (Exception e) {
+                        System.err.println("[WARNING] Trubles when download repo: " + repoUrl);
                     }
                 } else {
                     System.out.println("Cloning repository: " + repoUrl);
@@ -165,7 +167,7 @@ public class Downloader {
                     System.out.println("Repository cloned successfully: " + repoUrl);
                     success = true;
                 }
-            } catch (GitAPIException | IOException e) {
+            } catch (GitAPIException e) {
                 attempts--;
                 System.out.println("Connection error (" + attempts + " attempts left): " + e.getMessage());
                 if (attempts == 0) {
