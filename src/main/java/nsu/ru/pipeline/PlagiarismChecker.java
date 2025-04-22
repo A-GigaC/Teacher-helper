@@ -4,6 +4,7 @@ import de.jplag.*;
 import de.jplag.exceptions.ExitException;
 import de.jplag.java.JavaLanguage;
 import de.jplag.options.JPlagOptions;
+import de.jplag.reporting.reportobject.ReportObjectFactory;
 import nsu.ru.exceptions.DSLException;
 
 import java.io.File;
@@ -40,9 +41,9 @@ public class PlagiarismChecker {
         try {
             JPlagResult result = JPlag.run(options);
             System.out.println("Forming report");
-            //ReportObjectFactory reportObjectFactory = new ReportObjectFactory(new File("./14.zip"));
+            ReportObjectFactory reportObjectFactory = new ReportObjectFactory(new File("./report.zip"));
             System.out.println("Saved to zip");
-            //reportObjectFactory.createAndSaveReport(result);
+            reportObjectFactory.createAndSaveReport(result);
 
             return result;
 //            result.getAllComparisons().forEach(jPlagComparison -> jPlagComparison.
