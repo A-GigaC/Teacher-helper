@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import java.util.regex.*;
 
 public class Downloader {
     public static Set<String> setupStudentsRepositories(List<String> repoUrls) throws DSLException {
@@ -142,6 +143,12 @@ public class Downloader {
     }
 
     private static void setupGithubRepo(String repoUrl, String destinationPath) throws DSLException {
+        String[] parts = repoUrl.split("/");
+        String studentName = parts[3];
+        if (new File("./repos/" + studentName).exists()) {
+            return;
+        }
+
         File repoDir = new File(destinationPath);
         boolean success = false;
         int attempts = 3;
