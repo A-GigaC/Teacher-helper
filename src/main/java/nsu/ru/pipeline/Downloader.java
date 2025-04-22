@@ -156,7 +156,15 @@ public class Downloader {
                         System.out.println("Repository updated successfully: " + repoUrl);
                         success = true;
                     } catch (Exception e) {
-                        System.err.println("[WARNING] Trubles when download repo: " + repoUrl);
+                        System.err.println("[INFO] main no found. try to download master: " + repoUrl);
+                        try (Git git = Git.open(repoDir)) {
+                            git.reset().setMode(ResetCommand.ResetType.HARD).setRef("origin/master").call();
+                            System.out.println("Repository updated successfully: " + repoUrl);
+                            success = true;
+                        } catch (Exception exception) {
+                            attempts--;
+                            System.err.println("[WARNING] Trubles when download repo: " + repoUrl);
+                        }
                     }
                 } else {
                     System.out.println("Cloning repository: " + repoUrl);

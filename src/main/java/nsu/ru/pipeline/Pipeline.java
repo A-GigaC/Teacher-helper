@@ -7,10 +7,7 @@ import nsu.ru.models.Student;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Pipeline {
     public static void runPipeline(Config config) throws IOException, GitAPIException{
