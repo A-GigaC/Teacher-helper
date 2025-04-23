@@ -90,7 +90,7 @@ public class Evaluator {
         List<JPlagComparison> comparisons = jplagResult.getAllComparisons();
         List<JPlagComparison> allComparisons = new ArrayList<>();
         List<JPlagComparison> withFirstSubMatch = comparisons.stream().filter(it ->
-                it.secondSubmission().getName().equals(
+                it.firstSubmission().getName().equals(
                         student.getGithubNick()
                                 + "\\" + task.getName())).toList();
 
