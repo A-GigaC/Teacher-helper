@@ -31,8 +31,8 @@ public class ReportBuilder {
                         + " | "
                         + (
                         (ratedTask.getPlagiarism() > ratedTask.task.getMaxPlagiarism())
-                                ? "🤬"
-                                : "✅"
+                                ? "-"
+                                : "+"
                 );
 
                 System.out.println(output);
