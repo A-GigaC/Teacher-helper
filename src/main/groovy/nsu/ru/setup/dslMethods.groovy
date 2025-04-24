@@ -103,11 +103,14 @@ def markAsResolved(String githubNick, String taskName, String completionDate) {
     RatedTask ratedTask = new RatedTask(
             task,
             task.getMaxScore(),
+            new Date(0),
             new SimpleDateFormat(timeParsingPattern).parse(completionDate)
         )
     if (config.resolvedTasks.get(student) == null) {
         config.resolvedTasks.put(student, [])
     }
+    if (config.resolvedTasks.get(student).find{{rt -> rt.task.name == taskName}})
+
     config.resolvedTasks.get(student).add(ratedTask)
 }
 

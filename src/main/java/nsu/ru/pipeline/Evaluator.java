@@ -41,15 +41,20 @@ public class Evaluator {
                 ).toList().isEmpty()) {
                     continue;
                 }
-                long creationDateAsLong = getCreationDate(task, git);
-                if (creationDateAsLong == -1) {
+                long oldestCommitDateAsLong = getFirstCommitDate(task, git);
+                if (oldestCommitDateAsLong == -1) {
+                    continue;
+                }
+                long newestCommitDateAsLong = getLastCommitDate(task, git);
+                if (newestCommitDateAsLong == -1) {
                     continue;
                 }
 
                 double maximalSimmilarity = getPlagiarism(task, student, jPlagResult);
                 maximalSimmilarity = (((double)round(maximalSimmilarity * 10000)) / 100.0);
 
-                RatedTask ratedTask = new RatedTask(task, new Date(creationDateAsLong), maximalSimmilarity);
+                RatedTask ratedTask = new RatedTask(
+                        task, new Date(oldestCommitDateAsLong), new Date(newestCommitDateAsLong), maximalSimmilarity);
                 rated.get(student).add(ratedTask);
             }
             //rated.put(student, config.getResolvedTasks().get(student));
@@ -63,7 +68,7 @@ public class Evaluator {
         return rated;
     }
 
-    private static long getCreationDate(Task task, Git git) throws GitAPIException {
+    private static long getFirstCommitDate(Task task, Git git) throws GitAPIException {
         String taskPath = task.getName();
 
         Iterable<RevCommit> commits = git.log().addPath(taskPath).call();
@@ -84,6 +89,29 @@ public class Evaluator {
 
         Date creationDate = new Date(oldestCommit.getCommitTime() * 1000L);
         return creationDate.getTime();
+    }
+
+    private static long getLastCommitDate(Task task, Git git) throws GitAPIException {
+        String taskPath = task.getName();
+
+        Iterable<RevCommit> commits = git.log().addPath(taskPath).call();
+
+        RevCommit newestCommit = null;
+        for (RevCommit commit : commits) {
+            if (newestCommit == null || commit.getCommitTime() > newestCommit.getCommitTime()) {
+                newestCommit = commit;
+            }
+        }
+        if (newestCommit == null) {
+            System.out.println(
+                    "Cannot find newest commit. Maybe " + task.getName()
+                            + " does not exist on " + git.getRepository().getIdentifier() + " repo?"
+            );
+            return -1;
+        }
+
+        Date lastCommitDate = new Date(newestCommit.getCommitTime() * 1000L);
+        return lastCommitDate.getTime();
     }
 
     private static double getPlagiarism(Task task, Student student, JPlagResult jplagResult) {

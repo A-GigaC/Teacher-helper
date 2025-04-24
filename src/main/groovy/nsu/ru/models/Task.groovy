@@ -7,19 +7,18 @@ class Task {
     Date hardDeadline
     Integer maxPlagiarism
     TaskEvaluation evaluate = (RatedTask ratedTask) -> {
-        double ratedScores = 0
-        if (ratedTask.getCommitDate().before(ratedTask.task.getHardDeadline())) {
+        double ratedScores = maxScore
+        if (ratedTask.getFirstCommitDate().after(ratedTask.task.getSoftDeadline())) {
             //ratedTask.rated.get(student).add(new ReportBuilder.RatedTask(task, task.getMaxScore(), creationDate))
-            ratedScores += maxScore
-        } else if (ratedTask.getCommitDate().before(ratedTask.task.getSoftDeadline())) {
-            //rated.get(student).add(new ReportBuilder.RatedTask(task, task.getMaxScore() - 0.5, creationDate))
-            ratedScores += maxScore - 0.5
-        } else {
-            //rated.get(student).add(new ReportBuilder.RatedTask(task, task.getMaxScore() - 1, creationDate))
-            ratedScores += maxScore - 1
+            ratedScores -= 0.5
         }
+        if (ratedTask.getLastCommitDate().after(ratedTask.task.getHardDeadline())) {
+            //rated.get(student).add(new ReportBuilder.RatedTask(task, task.getMaxScore() - 0.5, creationDate))
+            ratedScores -= 0.5
+        }
+
         if (ratedTask.getPlagiarism() > maxPlagiarism) {
-            ratedScores -= 0.123
+            ratedScores -= 0.1
         }
 
         ratedTask.setProperty("score", ratedScores)

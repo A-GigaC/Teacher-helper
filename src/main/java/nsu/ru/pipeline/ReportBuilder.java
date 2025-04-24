@@ -2,6 +2,10 @@ package nsu.ru.pipeline;
 
 import nsu.ru.models.RatedTask;
 import nsu.ru.models.Student;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ReportBuilder {
@@ -11,6 +15,8 @@ public class ReportBuilder {
             Map<Student, List<RatedTask>> ratedTasks,
             HashMap<Student, Double> extraScore
     ) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
         System.out.println("SCORES");
         System.out.println("-------------------------------------------------------------------------------------");
         for (Student student : students) {
@@ -23,8 +29,10 @@ public class ReportBuilder {
                 totalScore += ratedTask.getScore();
                 String output = ratedTask.task.getName()
                         + "  |  "
-                        + ratedTask.getCommitDate()
+                        + format.format(ratedTask.getFirstCommitDate())
                         + "  |  "
+                        + format.format(ratedTask.getLastCommitDate())
+                        + " | "
                         + ratedTask.getScore()
                         + "  |  "
                         + ratedTask.getPlagiarism()
