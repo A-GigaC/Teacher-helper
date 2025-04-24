@@ -142,6 +142,12 @@ def extraScore(String githubNick, Double score) {
     config.extraScore.put(student, config.extraScore.get(student) + score)
 }
 
+def alternativeScoreStrategy(TaskEvaluation evaluation) {
+    for (Task task : config.tasks) {
+        task.setEvaluate(evaluation)
+    }
+}
+
 def alternativeScoreStrategy(String taskName, TaskEvaluation evaluation) {
     Task task = config.tasks.find({it -> it.name == taskName})
     if (task == null) {
