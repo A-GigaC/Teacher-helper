@@ -61,7 +61,8 @@ public class Evaluator {
             git.close();
 
             for (RatedTask ratedTask : rated.get(student)) {
-                ratedTask.task.getEvaluate().evaluate(ratedTask);
+                System.out.println(ratedTask.task.getName());
+                ratedTask.setScore(ratedTask.task.getEvaluate().evaluate(ratedTask));
             }
         }
 

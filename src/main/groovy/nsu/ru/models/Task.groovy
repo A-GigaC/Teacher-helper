@@ -7,7 +7,7 @@ class Task {
     Date hardDeadline
     Integer maxPlagiarism
     TaskEvaluation evaluate = (RatedTask ratedTask) -> {
-        double ratedScores = maxScore
+        Double ratedScores = maxScore
         if (ratedTask.getFirstCommitDate().after(ratedTask.task.getSoftDeadline())) {
             //ratedTask.rated.get(student).add(new ReportBuilder.RatedTask(task, task.getMaxScore(), creationDate))
             ratedScores -= 0.5
@@ -21,6 +21,6 @@ class Task {
             ratedScores -= 0.1
         }
 
-        ratedTask.setProperty("score", ratedScores)
+        return ratedScores
     }
 }
