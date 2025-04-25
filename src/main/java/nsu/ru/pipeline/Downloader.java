@@ -42,7 +42,7 @@ public class Downloader {
                 String localRepoDirName = studentNick;
                 File repoDir = new File(reposDir, localRepoDirName);
                 subDirs.add("./repos/" + localRepoDirName);
-                // Проверяем, существует ли репозиторий
+                // Check existing repo
                 if (repoDir.exists() && new File(repoDir, ".git").exists()) {
                     try (Git git = Git.open(repoDir)) {
                         System.out.println("Pulling repository: " + repoDir.getName());
@@ -61,7 +61,7 @@ public class Downloader {
                     repoDir.delete();
                 }
 
-                // Если репозитория нет, клонируем
+                // Clone if repo does not exists
                 System.out.println("Repository " + repoDir.getName() + " not found. Cloning...");
                 try (Git git = Git.cloneRepository()
                         .setURI(repoUrl)
@@ -87,22 +87,6 @@ public class Downloader {
             throw new DSLException("Failed to download: " + repoUrl);
         }
     }
-
-//    private static Set<String> encodingToUtf8(File directoryRoot) throws IOException {
-//
-//        if (!directoryRoot.isDirectory()) {
-//            FileReader fileReader = new FileReader(directoryRoot);
-//            System.out.println("File encoding: " + fileReader.getEncoding());
-//            fileReader.close();
-//        } else {
-//            File[] files = directoryRoot.listFiles();
-//            if (files != null) {
-//                for (File file : files) {
-//                    encodingToUtf8(file);
-//                }
-//            }
-//        }
-//    }
 
     public static Set<String> downloadAdditional(List<String> sources) {
         Set<String> subDirs = new HashSet<>();
@@ -177,10 +161,6 @@ public class Downloader {
         }
         return success;
     }
-
-//    private static void setupRemoteHttpResource(String link, String destinationPath) {
-//
-//    }
 
     private static boolean setupLocalResource(String sourcePath, String destinationPath) {
         File source = new File(sourcePath);

@@ -9,11 +9,9 @@ class Task {
     TaskEvaluation evaluate = (RatedTask ratedTask) -> {
         Double ratedScores = maxScore
         if (ratedTask.getFirstCommitDate().after(ratedTask.task.getSoftDeadline())) {
-            //ratedTask.rated.get(student).add(new ReportBuilder.RatedTask(task, task.getMaxScore(), creationDate))
             ratedScores -= 0.5
         }
         if (ratedTask.getLastCommitDate().after(ratedTask.task.getHardDeadline())) {
-            //rated.get(student).add(new ReportBuilder.RatedTask(task, task.getMaxScore() - 0.5, creationDate))
             ratedScores -= 0.5
         }
 

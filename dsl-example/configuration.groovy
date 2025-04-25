@@ -10,9 +10,9 @@ tasks {
 }
 
 students {
-    student "23214", "dromankin", "Ганс Ромашкин", "https://github.com/dromankin/OOP.git"
+    //student "23214", "dromankin", "Ганс Ромашкин", "https://github.com/dromankin/OOP.git"
     student "23216", "A-GigaC", "Пивоваров Фёдор Евгеньевич", "https://github.com/A-GigaC/OOP.git"
-    student "23216", "nkrainov", "Никита Сергеевич Крайнов", "https://github.com/nkrainov/OOP.git"
+    //student "23216", "nkrainov", "Никита Сергеевич Крайнов", "https://github.com/nkrainov/OOP.git"
     student "23213", "ArtemChepenkov", "Чепеньков Артем Игоревич","https://github.com/ArtemChepenkov/OOP.git"
 }
 

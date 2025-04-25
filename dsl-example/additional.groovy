@@ -5,7 +5,7 @@ markAsResolved "A-GigaC", "Task_1_1_1", "2024-10-22"
 
 alternativeScoreStrategy {rt -> {
     Double ratedScores = rt.task.getMaxScore()
-    if (rt.getFirstCommitDate().after(rt.task.getSoftDeadline())) {//ratedTask.rated.get(student).add(new ReportBuilder.RatedTask(task, task.getMaxScore(), creationDate))
+    if (rt.getFirstCommitDate().after(rt.task.getSoftDeadline())) {
         ratedScores -= 0.5
     }
     if (rt.getLastCommitDate().after(rt.task.getHardDeadline())) {

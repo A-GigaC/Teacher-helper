@@ -2,24 +2,15 @@ package nsu.ru.pipeline;
 
 import de.jplag.JPlagComparison;
 import de.jplag.JPlagResult;
-import nsu.ru.exceptions.DSLException;
 import nsu.ru.models.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
 import nsu.ru.models.Student;
 import nsu.ru.models.Task;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.revwalk.RevCommit;
-//import org.kohsuke.github.*;
-//import org.eclipse.jgit.api.Git;
-
-//import java.net.URL;
-
-//import static java.lang.Math.*;
 import static java.lang.Math.round;
 
 public class Evaluator {

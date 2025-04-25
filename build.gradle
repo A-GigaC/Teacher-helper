@@ -19,11 +19,6 @@ sourceSets {
         java { srcDirs = [] }
         groovy { srcDirs = ["src/main/java", "src/main/groovy"] }
     }
-
-//    test {
-//        java { srcDirs = ["src/test/java"] }
-//        groovy { srcDirs = ["src/test/groovy"] }
-//    }
 }
 
 dependencies {
@@ -45,13 +40,6 @@ dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: '2.0.1'
 }
 
-//test {
-//    useJUnitPlatform()
-//    testLogging {
-//        events "passed", "skipped", "failed"
-//    }
-//}
-
 compileTestJava.options.encoding = "UTF-8"
 
 jar {
@@ -67,7 +55,4 @@ jar {
     exclude 'META-INF/*.SF'
     exclude 'META-INF/*.DSA'
     exclude 'META-INF/*.RSA'
-//    // Если нужен fat-jar (со всеми зависимостями), добавьте:
-//    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

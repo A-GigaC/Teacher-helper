@@ -5,7 +5,6 @@ import nsu.ru.models.Config;
 import nsu.ru.models.RatedTask;
 import nsu.ru.models.Student;
 import org.eclipse.jgit.api.errors.GitAPIException;
-
 import java.io.IOException;
 import java.util.*;
 

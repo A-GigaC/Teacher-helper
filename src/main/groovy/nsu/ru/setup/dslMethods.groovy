@@ -1,17 +1,13 @@
 package nsu.ru.setup
 
 import nsu.ru.exceptions.DSLException
-//import nsu.ru.models.Assignment
 import nsu.ru.models.Group
 import nsu.ru.models.RatedTask
 import nsu.ru.models.Student
 import nsu.ru.models.Task
 import nsu.ru.models.TaskEvaluation
-
 import java.text.SimpleDateFormat
 import org.apache.commons.validator.routines.UrlValidator
-
-//println "dslMethods start"
 
 this.timeParsingPattern = "yyyy-MM-dd"
 

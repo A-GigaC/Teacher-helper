@@ -6,7 +6,6 @@ import de.jplag.java.JavaLanguage;
 import de.jplag.options.JPlagOptions;
 import de.jplag.reporting.reportobject.ReportObjectFactory;
 import nsu.ru.exceptions.DSLException;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
