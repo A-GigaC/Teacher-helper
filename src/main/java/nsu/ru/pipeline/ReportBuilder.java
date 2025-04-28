@@ -20,13 +20,13 @@ public class ReportBuilder {
         System.out.println("SCORES");
         System.out.println("-------------------------------------------------------------------------------------");
         for (Student student : students) {
-            System.out.println(student.getFullName() + " '" + student.getGithubNick() + "' ");
+            System.out.println(student.getFullName() + " '" + student.getGithubNick() + "' " + student.getGroupName());
             Double totalScore = 0.0;
             if (extraScore.get(student) != null) {
                 totalScore += extraScore.get(student);
             }
             if (ratedTasks.get(student) == null) {
-                System.err.println("There is no rated tasks for student: " + student.getGithubNick());
+                System.err.println("There is no rated tasks for this student");
                 continue;
             }
             for (RatedTask ratedTask : ratedTasks.get(student)) {

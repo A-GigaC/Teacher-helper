@@ -43,7 +43,7 @@ def student(String groupName, String githubNick, String fullName, String repoUrl
     if (!urlValidator.isValid(repoUrl)) {
         throw new DSLException("Invalid URL")
     }
-    def newStudent = new Student(githubNick: githubNick, fullName: fullName, repoUrl: repoUrl)
+    def newStudent = new Student(githubNick: githubNick, fullName: fullName, repoUrl: repoUrl, groupName: groupName)
     group.students << newStudent
     config.students << newStudent
     config.resolvedTasks.put(githubNick, [])

@@ -24,7 +24,14 @@ public class Evaluator {
             try {
                 git = Git.open(new File(repoPath));
             } catch (Exception e) {
-                System.err.println("Cannot rate student " + student.getGithubNick() + " cause there is no repo /OOP");
+                System.err.println(
+                        "Cannot rate student "
+                                + student.getFullName()
+                                + " "
+                                + student.getGithubNick()
+                                + " cause there is no repo /OOP"
+                                + student.getGroupName()
+                );
                 continue;
             }
 
