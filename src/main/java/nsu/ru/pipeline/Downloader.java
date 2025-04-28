@@ -30,7 +30,6 @@ public class Downloader {
     }
 
     private static void setupStudentRepository(String repoUrl, Set<String> subDirs, File reposDir) {
-
         boolean success = false;
         int attempts = 3;
         Exception lastError = null;
@@ -77,14 +76,17 @@ public class Downloader {
                 if (attempts > 0) {
                     System.out.println("Connection error. Retrying (" + attempts + " attempts left)...");
                 } else {
-                    throw new DSLException("Failed to download repo: " + repoUrl);
+//                    throw new DSLException("Failed to download repo: " + repoUrl);
+                    System.err.println("Failed to download repo: " + repoUrl);
+                    return;
                 }
             } catch (GitAPIException e) {
-                throw new DSLException("Failed to download: " + repoUrl);
+                System.err.println("Failed to download repo: " + repoUrl);
+                return;
             }
         }
         if (!success && lastError != null) {
-            throw new DSLException("Failed to download: " + repoUrl);
+            System.err.println("Failed to download repo: " + repoUrl);
         }
     }
 

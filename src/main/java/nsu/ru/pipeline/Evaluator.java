@@ -20,7 +20,13 @@ public class Evaluator {
             rated.put(student, config.getResolvedTasks().get(student));
 
             String repoPath = "./repos/" + student.getGithubNick();
-            Git git = Git.open(new File(repoPath));
+            Git git;
+            try {
+                git = Git.open(new File(repoPath));
+            } catch (Exception e) {
+                System.err.println("Cannot rate student " + student.getGithubNick() + " cause there is no repo /OOP");
+                continue;
+            }
 
             if (rated.get(student) == null) {
                 rated.put(student, new ArrayList());
