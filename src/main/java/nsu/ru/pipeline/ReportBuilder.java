@@ -10,17 +10,23 @@ import java.util.concurrent.TimeUnit;
 
 public class ReportBuilder {
 
-    public static void show(
+    public List<StudentResults> show(
             List<Student> students,
             Map<Student, List<RatedTask>> ratedTasks,
-            HashMap<Student, Double> extraScore
+            HashMap<Student, Double> extraScore,
+            Integer excellentCriteria,
+            Integer goodCriteria,
+            Integer satisfactoryCriteria
     ) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-        System.out.println("SCORES");
-        System.out.println("-------------------------------------------------------------------------------------");
+        List studentsResults = new ArrayList();
         for (Student student : students) {
-            System.out.println(student.getFullName() + " '" + student.getGithubNick() + "' " + student.getGroupName());
+            String studentLabel = student.getFullName()
+                    + " '"
+                    + student.getGithubNick()
+                    + "' "
+                    + student.getGroupName();
             Double totalScore = 0.0;
             if (extraScore.get(student) != null) {
                 totalScore += extraScore.get(student);
@@ -29,42 +35,30 @@ public class ReportBuilder {
                 System.err.println("There is no rated tasks for this student");
                 continue;
             }
+
+            List<List<Object>> data = new ArrayList();
             for (RatedTask ratedTask : ratedTasks.get(student)) {
                 totalScore += ratedTask.getScore();
-                String output = ratedTask.task.getName()
-                        + "  |  "
-                        + format.format(ratedTask.getFirstCommitDate())
-                        + "  |  "
-                        + format.format(ratedTask.getLastCommitDate())
-                        + " | "
-                        + TimeUnit.MILLISECONDS.toDays(
-                                ratedTask.getLastCommitDate().getTime() - ratedTask.getFirstCommitDate().getTime()
-                            )
-                        + " | "
-                        + ratedTask.getScore()
-                        + "  |  "
-                        + ratedTask.getPlagiarism()
-                        + " | "
-                        + (
+                List<Object> taskData = new ArrayList();
+                taskData.add(ratedTask.task.getName());
+                taskData.add(format.format(ratedTask.getFirstCommitDate()));
+                taskData.add(format.format(ratedTask.getLastCommitDate()));
+                taskData.add(
+                        TimeUnit.MILLISECONDS.toDays(
+                        ratedTask.getLastCommitDate().getTime() - ratedTask.getFirstCommitDate().getTime()
+                ));
+                taskData.add(ratedTask.getScore());
+                taskData.add(ratedTask.getPlagiarism());
+                taskData.add(
                         (ratedTask.getPlagiarism() > ratedTask.task.getMaxPlagiarism())
-                                ? "-"
-                                : "+"
+                        ? "-"
+                        : "+"
                 );
 
-                System.out.println(output);
+                data.add(taskData);
             }
-            System.out.println("Total score : " + totalScore);
-//            System.out.println("Folders : " +
-//                    new HashSet(
-//                            Arrays.stream(new File("./repos/" + student.getGithubNick())
-//                                    .listFiles()).toList()
-//                ).stream().filter(
-//                        folderName -> ratedTasks.get(student).stream().findFirst(
-//                                rrt -> rrt.task.getName() == folderName
-//                        ).isEmpty()
-//                    )
-//            );
-            System.out.println("Unknown folders: ");
+
+            List<String> unknownFolders = new ArrayList();
             for (String string : new HashSet<String>(
                     Arrays.stream(new File("./repos/" + student.getGithubNick())
                             .listFiles())
@@ -84,10 +78,54 @@ public class ReportBuilder {
                             ).toList()
                     )
             ) {
-                System.out.println(string);
+                unknownFolders.add(string);
+            }
+            List<Object[]> arrayedData = new ArrayList<>();
+            for (List<Object> line : data) {
+                arrayedData.add(line.toArray(new Object[7]));
+            }
+            String courseGrade = "VeryVeryBad";
+            if (totalScore >= excellentCriteria) {
+                courseGrade = "Excellent";
+            } else if (totalScore >= goodCriteria) {
+                courseGrade = "Good";
+            } else if (totalScore >= satisfactoryCriteria) {
+                courseGrade = "Satisfactory";
             }
 
-            System.out.println("-------------------------------------------------------------------------------------");
+            studentsResults.add(
+                    new StudentResults(
+                        studentLabel,
+                        arrayedData.toArray(new Object[arrayedData.size()][]),
+                        totalScore,
+                        unknownFolders.toString(),
+                        courseGrade
+                )
+            );
+        }
+
+        return studentsResults;
+    }
+
+    public class StudentResults {
+        public String studentLabel;
+        public Object[][] data;
+        public Double totalScore;
+        public String unknownFolders;
+        public String courseGrade;
+
+        public StudentResults(
+                String studentLabel,
+                Object[][] data,
+                double totalScore,
+                String unknownFolders,
+                String courseGrade
+        ) {
+            this.studentLabel = studentLabel;
+            this.data = data;
+            this.totalScore = totalScore;
+            this.unknownFolders = unknownFolders;
+            this.courseGrade = courseGrade;
         }
     }
 }
