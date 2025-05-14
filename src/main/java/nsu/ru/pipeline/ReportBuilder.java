@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ReportBuilder {
 
-    public List<StudentResults> show(
+    public List<StudentResults> formDataForGraphicalReport(
             List<Student> students,
             Map<Student, List<RatedTask>> ratedTasks,
             HashMap<Student, Double> extraScore,

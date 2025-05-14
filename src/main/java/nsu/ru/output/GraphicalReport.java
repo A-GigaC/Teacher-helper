@@ -1,15 +1,15 @@
-package nsu.ru.gui;
+package nsu.ru.output;
 
 import nsu.ru.pipeline.ReportBuilder;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class GUI {
+public class GraphicalReport {
     private final JFrame gui;
     private JLabel statusLabel;
 
-    public GUI() {
+    public GraphicalReport() {
         gui = new JFrame("Teacher helper");
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gui.setSize(1000, 900);
@@ -30,7 +30,7 @@ public class GUI {
         statusLabel = info;
     }
 
-    public void showResults(List<ReportBuilder.StudentResults> studentsResults) {
+    public void showReport(List<ReportBuilder.StudentResults> studentsResults) {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

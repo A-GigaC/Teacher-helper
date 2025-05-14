@@ -12,11 +12,14 @@ import com.beust.jcommander.Parameter;
 
 class Main {
     private static class Args {
-        @Parameter(names = {"-configuration", "-c"}, description = "Path to configuration script")
+        @Parameter(names = {"-configuration", "-c"}, description = "Path to configuration script", arity = 1)
         private String configPath = "./dsl-example/configuration.groovy";
 
-        @Parameter(names = {"-additional", "-a"}, description = "Path to additional script")
+        @Parameter(names = {"-additional", "-a"}, description = "Path to additional script", arity = 1)
         private String additionalPath = "./dsl-example/additional.groovy";
+
+        @Parameter(names = {"-showConsole", "-sc"}, description = "Use console output or not", arity = 1)
+        private boolean showConsole = false;
     }
 
     public static void main(String[] args) throws IOException, DSLException, GitAPIException {
@@ -30,6 +33,6 @@ class Main {
         System.out.println("Using additional: " + arguments.additionalPath);
 
         Config config = ScriptLoader.loadScript(arguments.configPath, arguments.additionalPath);
-        Pipeline.runPipeline(config);
+        Pipeline.runPipeline(config, arguments.showConsole);
     }
 }
