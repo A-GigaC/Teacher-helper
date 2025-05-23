@@ -23,3 +23,5 @@ setScoreCriteria {
     good 11
     satisfactory 8
 }
+
+setReviewer "BIGNIKi"
